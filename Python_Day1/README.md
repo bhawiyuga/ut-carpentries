@@ -91,6 +91,14 @@ If Python 3 is not installed or you need a newer version:
 
     This will open Jupyter Lab in your default web browser. You're now ready to start coding!
 
+9. Launch gitautopush:
+
+    ```bash
+    gitautopush --sleep 3 Python_Day1/
+    ```
+
+    All notebooks modified in Jupyter Lab will be updated while typing during the lesson.
+
 ## Verification
 
 To verify your setup is correct, ensure:
