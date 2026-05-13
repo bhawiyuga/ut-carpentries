@@ -2,7 +2,7 @@
 
 Welcome to the Python Software Carpentries training.  Please follow these instructions to set up your environment before the workshop.
 
-### Trainers: Adhitya Bhawiyuga (PhD Candidate at UT-ITC), Leila Iñigo de la Cruz (TU Delft), Néstor DelaPaz-Ruíz (UT-LISA)
+### Trainer: Néstor DelaPaz-Ruíz (UT-LISA)
 
 ## Prerequisites
 
