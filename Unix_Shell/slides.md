@@ -1,572 +1,603 @@
 ---
-marp: false
-theme: uncover
-class:
-  - lead
+marp: true
+theme: default
 paginate: true
-backgroundColor: #fff
+header: 'Unix Shell Training'
+footer: 'Software Carpentries - The Unix Shell'
 style: |
   section {
-    font-size: 1.5em;
+    font-size: 24px;
   }
-  section.title {
-    --title-color: #2c3e50;
-    color: var(--title-color);
+  h1 {
+    font-size: 42px;
+    color: #2c3e50;
+  }
+  h2 {
+    font-size: 34px;
+    color: #34495e;
   }
   code {
-    background: #f4f4f4;
-    border-radius: 4px;
+    font-size: 18px;
+    background-color: #f4f4f4;
     padding: 2px 6px;
+    border-radius: 4px;
   }
   pre {
-    background: #2d2d2d;
-    color: #f8f8f2;
-    padding: 16px;
-    border-radius: 8px;
-    font-size: 0.8em;
+    background-color: #f8f8f8;
+    border-left: 4px solid #3498db;
+    padding: 8px;
+    font-size: 18px;
   }
-  section.episode-header {
-    background: #2c3e50;
-    color: white;
+  table {
+    font-size: 22px;
   }
 ---
 
-<!-- _class: episode-header -->
+<!-- _class: lead -->
 # The Unix Shell
-## A Hands-on Training
+## A Training Slide Deck
 
-<!--
-Welcome to our training on the Unix Shell. Over the next sessions, we'll learn how to use the command line to automate tasks and work more efficiently.
--->
+**Based on Software Carpentries: The Unix Shell**
 
 ---
 
-<!-- _class: episode-header -->
+<!-- _class: lead -->
 # Episode 1
 ## Introducing the Shell
 
 ---
 
-## What is a Shell?
+# What is the Shell?
 
-- A **program** that lets you type commands
-- Reads commands and runs other programs
-- **Bash** — the most popular Unix shell
-- Text-based interface: **Command-Line Interface (CLI)**
+- **GUI (Graphical User Interface)**: Clicking and menus - intuitive but scales poorly
+- **CLI (Command-Line Interface)**: Text-based interaction - fast and automatable
+- **Shell**: A program that reads commands and runs other programs
+- This workshop uses **Bash** - the most popular Unix shell
 
-![width:500px](https://upload.wikimedia.org/wikipedia/commons/4/4b/Bash_Logo_Colored.svg)
-
----
-
-## GUI vs CLI
-
-<!-- _class: split -->
-
-<div style="display: flex; gap: 40px;">
-
-<div style="flex: 1;">
-
-### GUI
-- Mouse clicks
-- Menu-driven
-- Intuitive to learn
-- **Doesn't scale** for repetitive tasks
-
-</div>
-
-<div style="flex: 1;">
-
-### CLI
-- Text commands
-- Keyboard-driven
-- Takes effort to learn
-- **Excellent** for automation
-
-</div>
-
-</div>
+> "The shell's main advantages are its high action-to-keystroke ratio, its support for automating repetitive tasks, and its capacity to access networked machines."
 
 ---
 
-## Why Use the Shell?
+# Why Use the Shell?
 
-- **Automate repetitive tasks** — copy the 3rd line of 1000 files in seconds
-- **Reproducibility** — save commands as scripts
-- **Remote access** — cloud, clusters, servers
-- **High action-to-keystroke ratio** — do more with fewer keystrokes
-- **Combine tools** — chain simple programs together
+**Example Task**: Copy the third line from 1,000 text files in 1,000 different directories into a single file.
+
+| GUI Approach | CLI Approach |
+|-------------|--------------|
+| Hours of clicking | One series of commands |
+| Error-prone | Consistent and instant |
+| Not reproducible | Can be saved as a script |
+
+The shell excels at:
+- Automating repetitive tasks
+- Combining tools together
+- Running programs on remote systems
 
 ---
 
-## The Shell Prompt
+# The Shell Prompt
+
+When you open the shell, you see a **prompt**:
 
 ```bash
 $
 ```
 
 - The `$` indicates the shell is waiting for input
-- **Do not type the prompt** — only type the command that follows
+- **Do not type the prompt** - only type the command after it
 - Press **Enter** to execute a command
-- Your prompt may look different (e.g., `user@hostname $`)
+- Your prompt might look like: `nelle@localhost $`
 
 ---
 
-## First Command: `ls`
+# Your First Command: `ls`
+
+Try listing the contents of your current directory:
 
 ```bash
 $ ls
 ```
 
+Output:
 ```
 Desktop     Downloads   Movies      Pictures
 Documents   Library     Music       Public
 ```
 
-- `ls` = **list** — shows the contents of the current directory
-- Try it! Type `ls` and press Enter
-
----
-
-## Command Not Found
-
+If the shell can't find a program, you'll see:
 ```bash
 $ ks
-```
-
-```
 ks: command not found
 ```
 
-- If the shell can't find the command, it prints an error
-- Possible causes:
-  - Typo in the command name
-  - Program not installed
-  - Wrong path
+---
+
+# Key Points: Introducing the Shell
+
+- A **shell** is a program whose primary purpose is to read commands and run other programs
+- This lesson uses **Bash**, the default shell in many Unix implementations
+- Programs can be run in Bash by entering commands at the **command-line prompt**
+- The shell excels at: high action-to-keystroke ratio, automating repetitive tasks, and accessing networked machines
+- A significant challenge is **knowing what commands to run and how to run them**
 
 ---
 
-## Nelle's Pipeline: A Typical Problem
-
-- **Nelle Nemo**, marine biologist
-- 1520 samples from the North Pacific Gyre
-- Needs to run `goostats.sh` on each file
-- **Manual**: 12+ hours of clicking
-- **With shell**: Automate it, go write her paper
-
----
-
-## What Nelle Needs to Learn
-
-1. Navigate to files/directories
-2. Create files and directories
-3. Check file lengths
-4. Chain commands together
-5. Retrieve sets of files
-6. Iterate over files
-7. Run shell scripts
-
----
-
-<!-- _class: episode-header -->
+<!-- _class: lead -->
 # Episode 2
 ## Navigating Files and Directories
 
 ---
 
-## Key Navigation Commands
+# The File System
 
-| Command | What it does |
-|---------|-------------|
-| `pwd`   | **P**rint **W**orking **D**irectory |
-| `ls`    | **L**i**s**t contents |
-| `cd`    | **C**hange **D**irectory |
-
-```bash
-$ pwd
-/Users/nelle
-```
-
----
-
-## The File System Tree
+- The **file system** manages files and directories
+- **Files** hold information
+- **Directories** (folders) hold files or other directories
+- Organized as a tree with the **root directory** `/` at the top
 
 ```
 /
 ├── bin/
 ├── data/
 ├── Users/
+│   ├── nelle/
 │   ├── imhotep/
-│   ├── larry/
-│   └── nelle/
-│       ├── Desktop/
-│       ├── Documents/
-│       └── Downloads/
+│   └── larry/
 └── tmp/
 ```
 
-- `/` = **root directory** (top of the tree)
-- `/Users/nelle` = Nelle's **home directory**
-
 ---
 
-## `ls` Options
+# Essential Navigation Commands
+
+| Command | Description | Example |
+|---------|-------------|---------|
+| `pwd` | **P**rint **W**orking **D**irectory | `pwd` → `/Users/nelle` |
+| `ls` | **L**i**s**t directory contents | `ls`, `ls -F`, `ls -a` |
+| `cd` | **C**hange **D**irectory | `cd Desktop`, `cd ..` |
 
 ```bash
-$ ls -F          # classify: / for dirs, * for executables
-$ ls -l          # long format: details (size, date, permissions)
-$ ls -lh         # human-readable sizes (5.3K instead of 5369)
-$ ls -a          # show all (including hidden files starting with .)
-$ ls -t          # sort by time
-$ ls -r          # reverse order
-$ ls -lrt        # combine: long, reverse, by time
+$ pwd
+/Users/nelle
+
+$ ls -F
+Applications/ Documents/    Library/      Music/        Public/
+Desktop/      Downloads/    Movies/       Pictures/
 ```
 
 ---
 
-## Getting Help
+# Absolute vs. Relative Paths
 
-Two ways to learn about commands:
+**Absolute Path**: Starts from root `/`
+```bash
+$ cd /Users/nelle/Desktop/shell-lesson-data
+```
+
+**Relative Path**: Starts from current directory
+```bash
+$ cd Desktop/shell-lesson-data/exercise-data
+```
+
+---
+
+# Special Directory Shortcuts
+
+| Symbol | Meaning | Example |
+|--------|---------|---------|
+| `.` | Current directory | `ls .` |
+| `..` | Parent directory | `cd ..` |
+| `~` | Home directory | `cd ~` |
+| `-` | Previous directory | `cd -` |
 
 ```bash
-$ ls --help     # built-in help (Linux, Git Bash)
-$ man ls        # manual page (Linux, macOS)
+$ cd ..      # Go up one level
+$ cd ~       # Go to home directory
+$ cd -       # Go back to previous directory
+$ cd         # Also goes to home directory
 ```
-
-- `man` pages: navigate with ↑↓ or Space/b, search with `/`, quit with `q`
-- For shell built-ins (like `cd`): use `help cd`
 
 ---
 
-## Exploring Other Directories
+# Command Syntax
 
 ```bash
-$ ls -F Desktop                  # list a different directory
-$ cd Desktop/shell-lesson-data   # change to a subdirectory
-$ cd ..                          # go up one level
-$ cd                             # go home
-$ cd ~                           # home directory shortcut
-$ cd -                           # previous directory
-```
-
----
-
-## Absolute vs Relative Paths
-
-| Type | Example | Meaning |
-|------|---------|---------|
-| **Absolute** | `/Users/nelle/Desktop` | From root `/` |
-| **Relative** | `Desktop` | From current directory |
-| **Relative** | `..` | Parent directory |
-| **Shortcut** | `~` | Home directory |
-| **Shortcut** | `.` | Current directory |
-
----
-
-## Tab Completion
-
-Type the first few characters and press **Tab**:
-
-```bash
-$ ls nor<Tab>
-$ ls north-pacific-gyre/
-```
-
-- Saves typing
-- Reduces typos
-- Press Tab twice to see all possibilities
-
----
-
-## Shell Command Syntax
-
-```
 $ ls -F /
-  │  │  │
-  │  │  └── Argument (what to operate on)
-  │  └───── Option (changes behavior)
-  └──────── Command (the program)
 ```
 
-- **Command** + **Options** (flags) + **Arguments**
-- Options: short (`-F`) or long (`--classify`)
-- Separated by **spaces** — capitalization matters
+- `ls` = **command**
+- `-F` = **option** (flag/switch) - changes behavior
+- `/` = **argument** - tells command what to operate on
+
+Options:
+- **Short options**: single dash `-F`, `-a`, `-l`
+- **Long options**: double dash `--help`
+
+Multiple options can be combined: `ls -Fa` = `ls -F -a`
 
 ---
 
-<!-- _class: episode-header -->
+# Getting Help
+
+```bash
+# Option 1: --help flag
+$ ls --help
+
+# Option 2: man pages (Linux, macOS)
+$ man ls
+```
+
+**Navigating man pages**:
+- ↑ / ↓ - move line by line
+- Spacebar / b - page up/down
+- `/word` - search for "word"
+- N / Shift+N - next/previous match
+- q - quit
+
+---
+
+# Tab Completion
+
+The shell can auto-complete file and directory names:
+
+```bash
+$ ls nor<TAB>
+# Expands to:
+$ ls north-pacific-gyre/
+
+$ ls north-pacific-gyre/g<TAB>
+# Expands to:
+$ ls north-pacific-gyre/goo
+
+$ ls north-pacific-gyre/goo<TAB><TAB>
+goodiff.sh   goostats.sh
+```
+
+**Tab completion reduces typing errors and saves time!**
+
+---
+
+# Key Points: Navigating Files and Directories (1)
+
+- The **file system** manages information on disk in files and directories
+- `pwd` prints your **current working directory**
+- `ls [path]` lists contents of a specific file or directory
+- `cd [path]` changes your current working directory
+
+---
+
+# Key Points: Navigating Files and Directories (2)
+
+- Most commands take **options** (begin with `-`) and **arguments**
+- **Absolute paths** start from `/`; **relative paths** start from current location
+- `.` = current directory, `..` = parent directory
+- Use **tab completion** to minimize typing and errors
+
+---
+
+<!-- _class: lead -->
 # Episode 3
 ## Working With Files and Directories
 
 ---
 
-## Creating Directories
+# Creating Directories and Files
 
+**Create a directory:**
 ```bash
-$ mkdir thesis                   # create a directory
-$ mkdir -p project/data/raw      # create nested directories
+$ mkdir thesis              # Create single directory
+$ mkdir -p ../project/data  # Create nested directories
 ```
 
-- `mkdir` = **make directory**
-- `-p` = create parent directories as needed
-- No output on success (that's normal!)
-
----
-
-## Creating Files
-
+**Create an empty file:**
 ```bash
-$ nano draft.txt     # open text editor
-$ touch my_file.txt  # create empty file
+$ touch my_file.txt
 ```
 
-- `nano` — simple text editor
-  - `Ctrl+O` — save (WriteOut)
-  - `Ctrl+X` — exit
-- `touch` — creates empty file (0 bytes)
-
----
-
-## Nano Quick Reference
-
-| Keys | Action |
-|------|--------|
-| `Ctrl+O` | Save file |
-| `Ctrl+X` | Exit |
-| `Ctrl+G` | Help |
-| `Ctrl+K` | Cut line |
-| `Ctrl+U` | Paste |
-
----
-
-## Moving Files (`mv`)
-
+**Edit a file with nano:**
 ```bash
-$ mv thesis/draft.txt thesis/quotes.txt   # rename
-$ mv thesis/quotes.txt .                  # move to current dir
-$ mv -i old.txt new.txt                   # prompt before overwrite
+$ nano draft.txt
+# Ctrl+O to save, Ctrl+X to exit
 ```
 
-- `mv` = **move** (also renames)
-- First argument = source, second = destination
-- ⚠️ **Silently overwrites** existing files — use `-i` for safety
-
 ---
 
-## Copying Files (`cp`)
+# Moving and Renaming
+
+`mv` moves or renames files and directories:
 
 ```bash
-$ cp quotes.txt thesis/quotations.txt     # copy with new name
-$ cp quotes.txt thesis/                   # copy into directory
-$ cp -r thesis thesis_backup              # copy entire directory
+# Rename a file
+$ mv thesis/draft.txt thesis/quotes.txt
+
+# Move a file to current directory
+$ mv thesis/quotes.txt .
+
+# Move multiple files
+$ mv sucrose.dat maltose.dat ../raw
 ```
 
-- `cp` = **copy**
-- `-r` = **recursive** (required for directories)
-- Same overwrite warning as `mv`
+⚠️ **Warning**: `mv` silently overwrites existing files. Use `-i` for confirmation:
+```bash
+$ mv -i old.txt new.txt
+```
 
 ---
 
-## Removing Files and Directories
+# Copying Files and Directories
+
+`cp` copies files:
 
 ```bash
-$ rm quotes.txt                # remove a file
-$ rm -r thesis                 # remove directory and contents
-$ rm -i thesis_backup/*.txt    # prompt before each removal
+# Copy a file
+$ cp quotes.txt thesis/quotations.txt
+
+# Copy to a directory (keeps original name)
+$ cp quotes.txt thesis/
+
+# Copy a directory recursively
+$ cp -r thesis thesis_backup
 ```
 
-- ⚠️ **No trash bin** — deletion is permanent!
-- `rm` alone won't delete directories
-- `rm -r` deletes directories and everything inside
-- Use `rm -i` for safety
+⚠️ **Remember `-r`** for directories! Without it:
+```bash
+$ cp thesis thesis_backup
+cp: -r not specified; omitting directory 'thesis'
+```
 
 ---
 
-## Wildcards
+# Removing Files
+
+`rm` removes files **permanently** (no trash bin!):
+
+```bash
+# Remove a file
+$ rm quotes.txt
+
+# Remove with confirmation
+$ rm -i thesis_backup/quotations.txt
+```
+
+⚠️ **There is no undo!** Deleted files are gone forever.
+
+---
+
+# Removing Directories
+
+```bash
+# Remove a directory and ALL its contents
+$ rm -r thesis
+
+# Remove with confirmation recursively
+$ rm -r -i thesis
+```
+
+⚠️ **Use with great caution!** `rm -r` deletes everything without asking.
+
+---
+
+# Using Wildcards
+
+Wildcards help work with multiple files at once:
 
 | Wildcard | Meaning | Example |
 |----------|---------|---------|
-| `*` | Zero or more characters | `*.txt` → all .txt files |
-| `?` | Exactly one character | `?.txt` → a.txt but not ab.txt |
+| `*` | Zero or more characters | `*.txt` matches all `.txt` files |
+| `?` | Exactly one character | `?.txt` matches `a.txt` but not `any.txt` |
+
+The **shell expands wildcards** before running the command!
+
+---
+
+# Wildcard Examples
 
 ```bash
-$ ls *.pdb           # all .pdb files
-$ ls *dataset*       # files containing "dataset"
-$ ls ?ethane.pdb     # methane.pdb, ethane.pdb
+# List all .pdb files
+$ ls *.pdb
+
+# List files starting with 'c'
+$ ls c*
+
+# Files with exactly 3 chars before 'ane.pdb'
+$ ls ???ane.pdb
 ```
 
-- The **shell** expands wildcards before running the command
+**Common use case** - move all `.dat` files:
+```bash
+$ mv *.dat analyzed/
+```
 
 ---
 
-## File Naming Best Practices
+# Good File Naming Practices
 
-- ✅ Use lowercase letters, numbers, `.`, `-`, `_`
-- ❌ Don't use spaces (use `-` or `_` instead)
-- ❌ Don't start names with `-` (looks like an option)
-- ❌ Avoid special characters (`*`, `?`, `~`, etc.)
-- If you must use spaces, quote the name: `"my file.txt"`
+1. **Don't use spaces** - use `-` or `_` instead
+   - Bad: `north pacific gyre/`
+   - Good: `north-pacific-gyre/`
+
+2. **Don't start with `-`** - commands will treat it as an option
+
+3. **Stick with**: lowercase letters, numbers, `.`, `-`, `_`
+   - Many characters have special meanings
+
+4. **Use meaningful extensions**:
+   - `.txt` for text files
+   - `.csv` for comma-separated values
+   - `.sh` for shell scripts
 
 ---
 
-<!-- _class: episode-header -->
+# Key Points: Working With Files
+
+- `cp [old] [new]` - copy a file
+- `mkdir [path]` - create a new directory
+- `mv [old] [new]` - move/rename a file or directory
+- `rm [path]` - remove/delete a file
+- `*` matches zero or more characters; `?` matches any single character
+- Use **Control key** combinations: `Ctrl+O`, `Ctrl+X`, etc.
+- **The shell has no trash bin** - deletions are permanent
+- Use consistent, simple filenames to make wildcard matching easier
+
+---
+
+<!-- _class: lead -->
 # Episode 4
 ## Pipes and Filters
 
 ---
 
-## `wc` — Word Count
+# The Power of Combining Commands
+
+Unix philosophy: **Many simple tools that each do one job well, and work well together.**
+
+**Filters** are programs that transform input into output:
+- `wc` - word count
+- `sort` - sort lines
+- `head` / `tail` - show first/last lines
+- `cat` - concatenate/display files
+- `cut` - extract columns
+
+---
+
+# Counting with `wc`
 
 ```bash
+# Count lines, words, and characters
 $ wc cubane.pdb
-    20   156  1158  cubane.pdb
-    │     │     │       │
-    │     │     │       └── filename
-    │     │     └────────── characters
-    │     └──────────────── words
-    └────────────────────── lines
+20  156  1158  cubane.pdb
+
+# Count only lines
+$ wc -l *.pdb
+  20  cubane.pdb
+  12  ethane.pdb
+   9  methane.pdb
+ 107  total
 ```
 
-- `wc -l` — lines only
-- `wc -w` — words only
-- `wc -m` — characters only
+Options:
+- `-l` = lines only
+- `-w` = words only
+- `-m` = characters only
 
 ---
 
-## Redirecting Output
+# Redirecting Output
+
+Save command output to a file instead of printing to screen:
 
 ```bash
-$ wc -l *.pdb > lengths.txt    # redirect to file (overwrite)
-$ wc -l *.pdb >> lengths.txt   # append to file
-```
-
-| Operator | Action |
-|----------|--------|
-| `>` | Redirect, **overwrite** file |
-| `>>` | Redirect, **append** to file |
-
----
-
-## Viewing File Contents
-
-```bash
-$ cat lengths.txt       # print entire file
-$ less lengths.txt      # view page by page
-```
-
-- `cat` = con**cat**enate — dumps whole file to screen
-- `less` — view one screen at a time
-  - `Space` — next page, `b` — back, `q` — quit
-
----
-
-## `sort` and `head`/`tail`
-
-```bash
-$ sort -n lengths.txt        # sort numerically
-$ head -n 3 animals.csv      # first 3 lines
-$ tail -n 3 animals.csv      # last 3 lines
-```
-
-- `sort -n` — numerical sort (not alphabetical)
-- `head -n N` — first N lines (default: 10)
-- `tail -n N` — last N lines (default: 10)
-
----
-
-## Pipes — The Power of the Shell
-
-```bash
-$ wc -l *.pdb | sort -n | head -n 1
-```
-
-The `|` (pipe) connects commands:
-
-```
-wc -l *.pdb  →  sort -n  →  head -n 1
-   (output)      (input)      (input)
-```
-
-- Output of left command becomes input of right command
-- No intermediate files needed!
-
----
-
-## Pipes vs Redirects
-
-```bash
-# Save to file, then process
+# Redirect > (OVERWRITES file!)
 $ wc -l *.pdb > lengths.txt
-$ sort -n lengths.txt > sorted.txt
-$ head -n 1 sorted.txt
 
-# Same thing with pipes — no files!
+# Append >>
+$ echo "hello" >> log.txt
+
+# View file contents
+$ cat lengths.txt
+```
+
+⚠️ **Warning**: `>` overwrites existing files without warning!
+
+```bash
+# BAD idea - may corrupt data:
+$ sort -n lengths.txt > lengths.txt
+```
+
+---
+
+# Pipes: Connecting Commands
+
+The pipe `|` sends the output of one command as input to another:
+
+```bash
+# Without pipes (using intermediate files)
+$ wc -l *.pdb > lengths.txt
+$ sort -n lengths.txt > sorted-lengths.txt
+$ head -n 1 sorted-lengths.txt
+
+# With pipes - much cleaner!
 $ wc -l *.pdb | sort -n | head -n 1
 ```
 
----
-
-## The Unix Philosophy
-
-> "Do one thing, and do it well."
-
-- Write small programs that do one job
-- Programs read from **standard input**, write to **standard output**
-- Combine them with pipes to solve complex problems
-- You can (and should) write your own filters
+**Read pipes left to right**: "head of sort of line count of `*.pdb`"
 
 ---
 
-## `cut` and `uniq`
+# Useful Filter Commands
 
 ```bash
-$ cut -d , -f 2 animals.csv        # extract column 2
-$ cut -d , -f 2 animals.csv | sort | uniq    # unique values
-$ cut -d , -f 2 animals.csv | sort | uniq -c # count occurrences
-```
+# sort - sort lines
+$ sort -n lengths.txt      # numerical sort
+$ sort -r file.txt         # reverse sort
 
-- `cut -d [delim] -f [field]` — extract columns
-- `uniq` — remove adjacent duplicates (usually needs `sort` first!)
-- `uniq -c` — count occurrences
+# head / tail - show parts of files
+$ head -n 5 file.txt       # first 5 lines
+$ tail -n 3 file.txt       # last 3 lines
+
+# less - view file page by page
+$ less lengths.txt         # q to quit
+
+# cut - extract columns
+$ cut -d , -f 2 animals.csv   # 2nd field, comma-delimited
+```
 
 ---
 
-## Ctrl+C — Escape Hatch
+# Example Pipeline
 
-If a command seems stuck (or you forgot to give it a filename):
+**Find the 3 files with the fewest lines:**
 
 ```bash
-$ wc -l
-(waiting for input...)
+$ wc -l * | sort -n | head -n 3
 ```
 
-Press **Ctrl+C** to cancel and return to the prompt.
+**Find unique values in a CSV column:**
+
+```bash
+$ cut -d , -f 2 animals.csv | sort | uniq
+```
+
+**Count occurrences:**
+
+```bash
+$ cut -d , -f 2 animals.csv | sort | uniq -c
+```
 
 ---
 
-<!-- _class: episode-header -->
+# Key Points: Pipes and Filters
+
+- `wc` counts lines, words, and characters
+- `cat` displays file contents; `less` shows page by page
+- `sort` sorts input; `head`/`tail` show first/last lines
+- `command > file` redirects output to a file (overwrites)
+- `command >> file` appends output to a file
+- `[first] | [second]` is a **pipeline** - output of first becomes input of second
+- The best way to use the shell is to combine simple single-purpose programs with pipes
+
+---
+
+<!-- _class: lead -->
 # Episode 5
 ## Loops
 
 ---
 
-## Why Loops?
+# Why Loops?
 
-- Perform the same action on **many files**
-- Reduce typing (and typos!)
-- Key to **automation** and productivity
-- Similar to wildcards and tab completion
+**Loops** repeat commands for each item in a list - essential for automation!
 
----
+**Example**: Print the classification from each of 3 data files:
 
-## For Loop Syntax
-
+Without a loop:
 ```bash
-for variable in list_of_items
-do
-    commands using $variable
-done
+$ head -n 2 basilisk.dat | tail -n 1
+$ head -n 2 minotaur.dat | tail -n 1
+$ head -n 2 unicorn.dat | tail -n 1
 ```
 
+With a loop:
 ```bash
 $ for filename in basilisk.dat minotaur.dat unicorn.dat
 > do
@@ -575,194 +606,198 @@ $ for filename in basilisk.dat minotaur.dat unicorn.dat
 > done
 ```
 
-- `$` changes from prompt to `>` while typing the loop body
-
 ---
 
-## How Loops Work
-
-```
-List: basilisk.dat  minotaur.dat  unicorn.dat
-
-Iteration 1: filename = basilisk.dat  → run commands
-Iteration 2: filename = minotaur.dat  → run commands
-Iteration 3: filename = unicorn.dat   → run commands
-```
-
-- The **variable** (`filename`) gets each value in turn
-- Use `$variable` to access its value
-- `${variable}` is equivalent — safer in some contexts
-
----
-
-## Loops with Wildcards
+# Loop Syntax
 
 ```bash
-$ for datafile in *.pdb
+for variable in list_of_items
+do
+    command_using $variable
+done
+```
+
+**Key concepts:**
+- The **variable** holds each item in turn
+- `$variable` expands to the current value
+- `${variable}` also works (safer when concatenating)
+
+```bash
+# Example: print numbers 0-9
+$ for loopvar in 0 1 2 3 4 5 6 7 8 9
 > do
->     echo $datafile
+>     echo $loopvar
+> done
+
+# Shorthand using brace expansion
+$ for loopvar in {0..9}
+```
+
+---
+
+# Looping Over Files
+
+Use wildcards to create file lists:
+
+```bash
+# Process all .dat files
+$ for filename in *.dat
+> do
+>     echo $filename
+>     head -n 100 $filename | tail -n 20
 > done
 ```
 
-- The shell expands `*.pdb` **before** the loop starts
-- Works with any pattern: `NENE*A.txt`, `*c*`, etc.
-
----
-
-## Naming Variables
-
+**Practical example** - backup files with prefix:
 ```bash
-# Good names — tell you what it is
-for filename in *.dat
-for datafile in *.pdb
-
-# Bad names — meaningless or misleading
-for x in *.dat
-for temperature in *.dat
-```
-
-Name variables so the **next person** (including future you) understands them.
-
----
-
-## Loops for File Operations
-
-```bash
-# Copy with prefix
 $ for filename in *.dat
 > do
 >     cp $filename original-$filename
 > done
 ```
 
-This runs:
-```
-cp basilisk.dat original-basilisk.dat
-cp minotaur.dat original-minotaur.dat
-cp unicorn.dat original-unicorn.dat
-```
+Result: `basilisk.dat` → `original-basilisk.dat`
 
 ---
 
-## Debugging with `echo`
+# Debugging Loops with `echo`
 
-Before running a **potentially destructive** loop, dry-run it:
+Preview what a loop *would* do without actually running it:
 
 ```bash
-$ for filename in *.dat
+# What would this loop do?
+$ for datafile in *.pdb
 > do
->     echo "cp $filename original-$filename"
+>     echo "cat $datafile >> all.pdb"
+> done
+
+cat cubane.pdb >> all.pdb
+cat ethane.pdb >> all.pdb
+cat methane.pdb >> all.pdb
+...
+```
+
+> **Tip**: Using quotes around the entire command makes `>>` literal text, not a redirection!
+
+---
+
+# History Shortcuts
+
+| Shortcut | Action |
+|----------|--------|
+| ↑ / ↓ | Scroll through previous commands |
+| `history` | List recent commands |
+| `!123` | Re-run command number 123 |
+| `!!` | Re-run last command |
+| `!$` | Last word of last command |
+| Ctrl+R | Search command history |
+| Ctrl+A | Go to start of line |
+| Ctrl+E | Go to end of line |
+
+---
+
+# Nested Loops
+
+Loops can contain other loops:
+
+```bash
+$ for species in cubane ethane methane
+> do
+>     for temperature in 25 30 37 40
+>     do
+>         mkdir $species-$temperature
+>     done
 > done
 ```
 
-```
-cp basilisk.dat original-basilisk.dat
-cp minotaur.dat original-minotaur.dat
-cp unicorn.dat original-unicorn.dat
-```
-
-- `echo` shows what *would* happen without actually doing it
+Creates directories:
+- `cubane-25`, `cubane-30`, `cubane-37`, `cubane-40`
+- `ethane-25`, `ethane-30`, ...
+- `methane-25`, `methane-30`, ...
 
 ---
 
-## Spaces and Special Characters
+# Key Points: Loops (1)
 
-Avoid spaces in filenames! But if you must:
-
-```bash
-$ for filename in "red dragon.dat" "purple unicorn.dat"
-> do
->     head -n 100 "$filename" | tail -n 20
-> done
-```
-
-Quote the variable: `"$filename"` — otherwise the shell splits on spaces.
+- A `for` loop repeats commands once for every item in a list
+- Every loop needs a **variable** (`$name`) to refer to the current item
+- Use `$name` or `${name}` to expand a variable
+- **Don't use spaces** in filenames - it complicates variable expansion
 
 ---
 
-## Overwrite vs Append in Loops
+# Key Points: Loops (2)
 
-```bash
-# BAD — overwrites each time, only last file's content remains
-for f in *.pdb; do
-    cat $f > all.pdb
-done
-
-# GOOD — appends, all content saved
-for f in *.pdb; do
-    cat $f >> all.pdb
-done
-```
+- Give files **consistent names** that are easy to match with wildcards
+- Use **↑** to scroll through previous commands
+- Use **Ctrl+R** to search command history
+- Use `history` and `![number]` to repeat commands
 
 ---
 
-## History Commands
-
-```bash
-$ history              # show command history
-$ !459                 # re-run command #459
-$ !!                   # re-run last command
-$ !$                   # last word of last command
-$ Ctrl+R               # reverse search through history
-$ ↑ / ↓                # scroll through previous commands
-```
-
----
-
-<!-- _class: episode-header -->
+<!-- _class: lead -->
 # Episode 6
 ## Shell Scripts
 
 ---
 
-## What is a Shell Script?
+# What is a Shell Script?
 
-- A file containing shell commands
-- Re-run complex operations with a single command
-- Makes your work **faster**, **more accurate**, and **reproducible**
-- A shell script is really a **small program**
+A **shell script** is a file containing multiple shell commands that can be executed together.
+
+**Benefits:**
+- Save and reuse commands
+- Avoid retyping
+- Make work reproducible
+- Share with others
 
 ---
 
-## Creating and Running a Script
+# Creating and Running a Script
 
+**Create a script with nano:**
 ```bash
-$ nano middle.sh          # create/edit the script
+$ nano middle.sh
 ```
 
-Content of `middle.sh`:
+Add commands to the file:
 ```bash
 head -n 15 octane.pdb | tail -n 5
 ```
 
+**Run the script:**
 ```bash
-$ bash middle.sh          # run the script
+$ bash middle.sh
 ```
 
 ---
 
-## Command-Line Arguments
+# Using Command-Line Arguments
 
-```bash
-$ bash middle.sh octane.pdb   # $1 = octane.pdb
-```
+Scripts can accept arguments using special variables:
 
 | Variable | Meaning |
 |----------|---------|
 | `$1` | First argument |
 | `$2` | Second argument |
 | `$3` | Third argument |
-| `$@` | **All** arguments |
-| `$#` | Number of arguments |
+| `$@` | All arguments |
 
+**Example** - `middle.sh`:
 ```bash
-# middle.sh — now flexible!
 head -n "$2" "$1" | tail -n "$3"
+```
+
+Usage:
+```bash
+$ bash middle.sh pentane.pdb 15 5
 ```
 
 ---
 
-## Adding Comments
+# Writing Better Scripts
+
+Add **comments** to explain what your script does:
 
 ```bash
 # Select lines from the middle of a file.
@@ -770,222 +805,271 @@ head -n "$2" "$1" | tail -n "$3"
 head -n "$2" "$1" | tail -n "$3"
 ```
 
-- Comments start with `#`
-- Explain **what** the script does and **how to use it**
-- Your future self will thank you!
+**Tips:**
+- Start comments with `#`
+- Quotes around `"$1"` handle filenames with spaces
+- `"$@"` is special syntax for all arguments (equivalent to `"$1" "$$2" ...`)
 
 ---
 
-## Processing Multiple Files with `$@`
+# Example: Sorting Script
 
 ```bash
-# sorted.sh — sort files by line count
+# Sort files by their length.
 # Usage: bash sorted.sh one_or_more_filenames
 wc -l "$@" | sort -n
 ```
 
+Run it:
 ```bash
 $ bash sorted.sh *.pdb ../creatures/*.dat
 ```
 
-`"$@"` expands to all arguments, properly quoted.
-
----
-
-## Saving History as a Script
-
-```bash
-$ history | tail -n 5 > redo-figure-3.sh
+Output:
 ```
-
-Then edit the file to:
-1. Remove line numbers
-2. Remove the `history` command itself
-3. You now have a reproducible record!
-
----
-
-## Nelle's Final Script
-
-```bash
-# Calculate stats for data files.
-for datafile in "$@"
-do
-    echo $datafile
-    bash goostats.sh $datafile stats-$datafile
-done
-```
-
-Run it:
-```bash
-$ bash do-stats.sh NENE*A.txt NENE*B.txt
+9 methane.pdb
+12 ethane.pdb
+15 propane.pdb
+...
+596 total
 ```
 
 ---
 
-## Debugging Scripts
+# Capturing History
+
+Save your recent commands to a script:
 
 ```bash
-$ bash -x do-errors.sh NENE*A.txt NENE*B.txt
+$ history | tail -n 5 > redo-analysis.sh
 ```
 
-- `-x` = **debug mode** — prints each command as it executes
-- Helps find typos, variable issues, and logic errors
+Then edit to:
+- Remove line numbers
+- Remove the `history` command itself
+- Add comments
+
+This is a common workflow: experiment interactively, then capture the successful commands in a script.
 
 ---
 
-<!-- _class: episode-header -->
+# Key Points: Shell Scripts
+
+- Save commands in **shell scripts** for re-use
+- `bash [filename]` runs the commands saved in a file
+- `$@` refers to **all** command-line arguments
+- `$1`, `$2`, etc. refer to the first, second, etc. arguments
+- **Quote variables** if values might contain spaces
+- Let users decide what files to process - more flexible and consistent with Unix commands
+- Add **comments** starting with `#` to explain your scripts
+
+---
+
+<!-- _class: lead -->
 # Episode 7
 ## Finding Things
 
 ---
 
-## `grep` — Find Text in Files
+# Finding Text with `grep`
 
-```bash
-$ grep pattern filename
-```
+`grep` finds and prints lines matching a pattern:
 
 ```bash
 $ grep not haiku.txt
-```
-
-```
 Is not the true Tao, until
 "My Thesis" not found
 Today it is not working
 ```
 
-- **G**lobal **R**egular **E**xpression **P**rint
-- Finds lines matching a pattern
-- Case-sensitive by default
+By default, `grep` searches case-sensitively and matches partial words.
 
 ---
 
-## `grep` Options
-
-| Option | Effect |
-|--------|--------|
-| `-w` | Match whole words only |
-| `-n` | Show line numbers |
-| `-i` | Case-insensitive |
-| `-v` | Invert match (lines NOT matching) |
-| `-r` | Recursive (search in subdirectories) |
-| `-c` | Count matching lines |
-| `-o` | Show only the matching part |
+# `grep` Options
 
 ```bash
+# Word boundaries only
+$ grep -w The haiku.txt
+The Tao that is seen
+
+# Case-insensitive
+$ grep -i "the" haiku.txt
+
+# Inverted search (lines that DON'T match)
+$ grep -v "the" haiku.txt
+
+# With line numbers
+$ grep -n "it" haiku.txt
+```
+
+---
+
+# `grep` Options Summary
+
+| Option | Meaning |
+|--------|---------|
+| `-w` | Match whole words only |
+| `-i` | Case-insensitive |
+| `-n` | Show line numbers |
+| `-v` | Invert match (show non-matching lines) |
+| `-r` | Recursive (search directories) |
+| `-E` | Extended regular expressions |
+
+```bash
+# Search recursively in all .txt files
+$ grep -r "Yesterday" .
+
+# Combine options
 $ grep -n -w -i "the" haiku.txt
 ```
 
 ---
 
-## `grep` Examples
+# Finding Files with `find`
+
+`find` locates files and directories by name or type:
 
 ```bash
-$ grep -w "is not" haiku.txt         # phrase search
-$ grep -r "Yesterday" .              # recursive search
-$ grep -v "not" haiku.txt            # lines without "not"
-$ grep -c "rabbit" animals.csv       # count matches
+# List all files and directories
+$ find .
+
+# Find only directories
+$ find . -type d
+
+# Find only files
+$ find . -type f
+
+# Find by name (quote wildcards!)
+$ find . -name "*.txt"
+
+# Find by name case-insensitive
+$ find . -iname "*.TXT"
 ```
+
+⚠️ **Always quote wildcards** in `find` so the shell doesn't expand them!
 
 ---
 
-## Regular Expressions with `grep -E`
+# Combining `find` with Other Commands
+
+Use `$()` to use command output as arguments:
 
 ```bash
-$ grep -E "^.o" haiku.txt
-```
-
-- `^` — start of line
-- `.` — any single character
-- `-E` — extended regular expressions
-- Always **quote** regex patterns to prevent shell expansion
-
----
-
-## `find` — Find Files
-
-```bash
-$ find .                    # find everything from current dir
-$ find . -type d            # directories only
-$ find . -type f            # files only
-$ find . -name "*.txt"      # files matching pattern
-```
-
-- Recursive by default
-- ⚠️ Quote the pattern: `"*.txt"` not `*.txt`
-  - Otherwise the shell expands it before `find` sees it
-
----
-
-## Command Substitution: `$()`
-
-```bash
+# Count lines in all .txt files
 $ wc -l $(find . -name "*.txt")
-```
 
-What happens:
-1. Shell runs `find . -name "*.txt"`
-2. Replaces `$(...)` with the output
-3. Runs: `wc -l ./a.txt ./b.txt ./c.txt`
-
-Any command's output can be used as arguments to another command!
-
----
-
-## Combining `find` and `grep`
-
-```bash
+# Search for text in all .txt files
 $ grep "searching" $(find . -name "*.txt")
 ```
 
-1. `find` finds all `.txt` files
-2. `grep` searches inside those files for "searching"
+**How it works:**
+1. Shell runs the command inside `$()`
+2. Replaces `$()` with the command's output
+3. Runs the outer command with that output
 
 ---
 
-## Text vs Binary Files
+# `grep` with Regular Expressions
 
-- `grep`, `wc`, `head`, etc. work on **text files**
-- They may not work well on:
-  - Images, PDFs, Word documents
-  - Databases, spreadsheets
-  - Compiled programs
-- Convert to text first, or use specialized tools
+`grep`'s real power comes from **regular expressions**:
+
+```bash
+# Find lines with 'o' in the second position
+$ grep -E "^.o" haiku.txt
+You bring fresh toner.
+Today it is not working
+Software is like that.
+```
+
+| Pattern | Meaning |
+|---------|---------|
+| `^` | Start of line |
+| `.` | Any single character |
+| `*` | Zero or more of the preceding |
+
+> See the Library Carpentry regular expressions lesson for more!
 
 ---
 
-<!-- _class: episode-header -->
+# Example: Finding and Filtering
+
+**Find all `.dat` files except those containing "unicorn":**
+
+```bash
+$ find creatures -name "*.dat" | grep -v unicorn
+```
+
+**Find files and count lines:**
+```bash
+$ wc -l $(find . -name "*.dat") | sort -n
+```
+
+**Find text in specific files:**
+```bash
+$ grep "pattern" $(find . -name "*.txt")
+```
+
+---
+
+# Key Points: Finding Things
+
+- `find` finds files with specific properties that match patterns
+- `grep` selects lines in files that match patterns
+- `--help` displays usage information for many commands
+- `man [command]` displays the manual page for a command
+- `$([command])` inserts a command's output in place
+- **Quote wildcards** in `find` to prevent shell expansion
+- Regular expressions make `grep` extremely powerful for pattern matching
+
+---
+
+<!-- _class: lead -->
 # Summary
+## The Unix Shell
 
 ---
 
-## Core Commands Cheat Sheet
+# Command Reference
 
-| Category | Commands |
-|----------|----------|
-| **Navigation** | `pwd` `ls` `cd` |
-| **Files/Dirs** | `mkdir` `touch` `cp` `mv` `rm` `nano` |
-| **Viewing** | `cat` `less` `head` `tail` |
-| **Processing** | `wc` `sort` `uniq` `cut` |
-| **Searching** | `grep` `find` |
-| **Automation** | `for` loops, shell scripts |
-| **Help** | `man` `--help` `history` |
-
----
-
-## Key Concepts
-
-1. **Pipes** (`|`) chain commands together
-2. **Redirects** (`>`, `>>`) send output to files
-3. **Wildcards** (`*`, `?`) match file patterns
-4. **Variables** (`$var`, `$1`, `$@`) hold values
-5. **Loops** (`for ... do ... done`) repeat commands
-6. **Scripts** save commands for reuse and reproducibility
+| Command | Purpose |
+|---------|---------|
+| `pwd` | Print working directory |
+| `ls` | List directory contents |
+| `cd` | Change directory |
+| `mkdir` | Make directory |
+| `cp` | Copy files/directories |
+| `mv` | Move/rename files/directories |
+| `rm` | Remove files/directories |
+| `cat` | Display file contents |
+| `wc` | Count lines/words/characters |
+| `sort` | Sort lines |
+| `head` / `tail` | Show first/last lines |
+| `grep` | Find matching text |
+| `find` | Find files by name/type |
 
 ---
 
-<!-- _class: episode-header -->
-# Questions?
-## Happy Shell-ing! 🐚
+# Concepts Reference
+
+| Concept | Description |
+|---------|-------------|
+| **Absolute path** | Starts from `/` |
+| **Relative path** | Starts from current directory |
+| **Wildcards** | `*` = any chars, `?` = one char |
+| **Redirection** | `>` = overwrite, `>>` = append |
+| **Pipes** | `\|` = connect command output to input |
+| **Variables** | `$name` or `${name}` |
+| **Loops** | `for ... do ... done` |
+| **Scripts** | Save commands in a file, run with `bash` |
+
+---
+
+<!-- _class: lead -->
+# Thank You!
+
+## The Unix Shell
+
+**Materials:** https://swcarpentry.github.io/shell-novice/
+
+**Licensed under CC-BY 4.0 by The Carpentries**
