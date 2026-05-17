@@ -34,12 +34,10 @@ style: |
 ---
 
 <!-- _class: lead -->
-# The Unix Shell
-## A Training Slide Deck
+# The Unix Shell: Software Carpentries
 
 ### Adhitya Bhawiyuga (UT-ITC)
 
-**Based on Software Carpentries: The Unix Shell**
 
 ---
 
@@ -54,7 +52,7 @@ style: |
 - **GUI (Graphical User Interface)**: Clicking and menus - intuitive but scales poorly
 - **CLI (Command-Line Interface)**: Text-based interaction - fast and automatable
 - **Shell**: A program that reads commands and runs other programs
-- This workshop uses **Bash** - the most popular Unix shell
+- This workshop uses **Bash** (also compatible with **zsh**, the modern macOS default) - the most popular Unix shell
 
 > "The shell's main advantages are its high action-to-keystroke ratio, its support for automating repetitive tasks, and its capacity to access networked machines."
 
@@ -118,7 +116,7 @@ ks: command not found
 # Key Points: Introducing the Shell
 
 - A **shell** is a program whose primary purpose is to read commands and run other programs
-- This lesson uses **Bash**, the default shell in many Unix implementations
+- This lesson uses **Bash** (also compatible with **zsh**), the default shell in many Unix implementations
 - Programs can be run in Bash by entering commands at the **command-line prompt**
 - The shell excels at: high action-to-keystroke ratio, automating repetitive tasks, and accessing networked machines
 - A significant challenge is **knowing what commands to run and how to run them**

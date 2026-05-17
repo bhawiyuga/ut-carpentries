@@ -14,6 +14,32 @@ The training covers the following episodes:
 6. **Shell Scripts** — Writing reusable scripts with arguments and comments
 7. **Finding Things** — Using `grep` and `find` to locate text and files
 
+## Setup
+
+Follow these steps to prepare for the workshop.
+
+### 1. Download Files
+
+1. Download [**shell-lesson-data.zip**](https://swcarpentry.github.io/shell-novice/data/shell-lesson-data.zip) and move the file to your Desktop.
+2. Unzip/extract the file. You should end up with a new folder called **`shell-lesson-data`** on your Desktop.
+
+> **Note:** In some cases, the extracted zip folder may be duplicated, so you might have a folder `shell-lesson-data` containing another folder with the same name. On Windows, this happens when double-clicking the zip file. To avoid this, right-click the zip file and choose "Extract All…" instead.
+
+### 2. Install Software
+
+If you do not already have a Unix shell installed, follow the [Carpentries installation instructions for the shell](https://carpentries.github.io/workshop-template/install_instructions/#shell).
+
+- **Windows:** Install [Git for Windows](https://carpentries.github.io/workshop-template/install_instructions/#shell), which includes Git Bash. Open Git Bash from the Start menu. Advanced users may alternatively use the [Windows Subsystem for Linux (WSL)](https://learn.microsoft.com/en-us/windows/wsl/install).
+- **macOS:** Open the **Terminal** application from the Utilities folder (or search for it with Spotlight). The default shell on macOS Catalina and later is Zsh; on earlier versions it is Bash. If needed, type `bash` in the terminal to run Bash.
+- **Linux:** Open a terminal (e.g., Gnome Terminal, KDE Konsole, or xterm) from the applications menu or search bar. The default shell is usually Bash.
+
+### 3. Open a New Shell
+
+1. Open your terminal application.
+2. Type `cd` and press **Return**. This ensures you start in your home directory.
+
+In the lesson, you will learn how to access the data files in the `shell-lesson-data` folder.
+
 ## Slide Deck
 
 The training is presented as a slide deck located in `slides.md`.
