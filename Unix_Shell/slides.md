@@ -2,7 +2,7 @@
 marp: true
 theme: default
 paginate: true
-header: 'Unix Shell Training'
+header: 'Unix Shell Training - University of Twente'
 footer: 'Software Carpentries - The Unix Shell'
 style: |
   section {
@@ -37,6 +37,8 @@ style: |
 # The Unix Shell
 ## A Training Slide Deck
 
+### Adhitya Bhawiyuga (UT-ITC)
+
 **Based on Software Carpentries: The Unix Shell**
 
 ---
@@ -60,7 +62,7 @@ style: |
 
 # Why Use the Shell?
 
-**Example Task**: Copy the third line from 1,000 text files in 1,000 different directories into a single file.
+**Example Task**: Create 100 different directories, each of which for different day of data collection.
 
 | GUI Approach | CLI Approach |
 |-------------|--------------|
@@ -72,6 +74,7 @@ The shell excels at:
 - Automating repetitive tasks
 - Combining tools together
 - Running programs on remote systems
+- AI-agent interaction
 
 ---
 
